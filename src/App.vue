@@ -1,6 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import NavBar from '@/components/NavBar.vue';
+</script>
 
 <template>
+  <NavBar />
   <router-view />
 </template>
 
@@ -16,5 +19,9 @@
 }
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
+}
+:global(body) {
+  margin: 0;
+  background: #f4f7fb;
 }
 </style>

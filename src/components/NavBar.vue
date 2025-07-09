@@ -3,33 +3,39 @@
     <div class="navbar-inner">
       <div class="navbar-title">Vue Playground</div>
       <nav class="navbar-menu">
-        <router-link to="/" class="navbar-item" :class="{ active: isActive('/') }"
-          >Home</router-link
-        >
-        <div
-          class="navbar-item validation-menu"
-          @mouseenter="open = true"
-          @mouseleave="open = false"
-        >
-          <span :class="{ active: isValidationActive }">Validation</span>
-          <transition name="slide-fade">
-            <ul v-if="open" class="submenu">
-              <li>
-                <router-link to="/validation/zod-vs-yup" class="submenu-item" @click="open = false"
-                  >Zod vs Yup Form</router-link
+        <template v-for="route in navRoutes" :key="route.path">
+          <router-link
+            v-if="!route.children"
+            :to="route.path"
+            class="navbar-item"
+            :class="{ active: isActive(route.path) }"
+            >{{ route.meta?.label }}</router-link
+          >
+          <div
+            v-else
+            class="navbar-item validation-menu"
+            @mouseenter="openDropdown = route.path"
+            @mouseleave="openDropdown = null"
+          >
+            <span :class="{ active: isDropdownActive(route) }">{{ route.meta?.label }}</span>
+            <transition name="slide-fade">
+              <ul v-if="openDropdown === route.path" class="submenu">
+                <li
+                  v-for="child in route.children.filter((c: any) => c.meta?.nav)"
+                  :key="child.path"
                 >
-              </li>
-              <li>
-                <router-link
-                  to="/validation/zod-vs-yup/playground"
-                  class="submenu-item"
-                  @click="open = false"
-                  >Zod vs Yup Playground</router-link
-                >
-              </li>
-            </ul>
-          </transition>
-        </div>
+                  <router-link
+                    :to="fullChildPath(route, child)"
+                    class="submenu-item"
+                    @click="openDropdown = null"
+                  >
+                    {{ child.meta?.label }}
+                  </router-link>
+                </li>
+              </ul>
+            </transition>
+          </div>
+        </template>
       </nav>
     </div>
   </header>
@@ -37,16 +43,30 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router';
 
-const open = ref(false);
+const openDropdown = ref<string | null>(null);
 const route = useRoute();
+const router = useRouter();
+
+// Top-level nav routes (with meta.nav)
+const navRoutes = computed(() =>
+  (router.options.routes as RouteRecordRaw[]).filter(r => r.meta?.nav),
+);
 
 function isActive(path: string) {
   return route.path === path;
 }
 
-const isValidationActive = computed(() => route.path.startsWith('/validation'));
+function isDropdownActive(parentRoute: RouteRecordRaw) {
+  return route.path.startsWith(parentRoute.path as string);
+}
+
+function fullChildPath(parent: RouteRecordRaw, child: RouteRecordRaw) {
+  if ((child.path as string).startsWith('/')) return child.path as string;
+  return (parent.path as string).replace(/\/$/, '') + '/' + child.path;
+}
 </script>
 
 <style scoped>

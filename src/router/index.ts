@@ -26,6 +26,19 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
+  {
+    path: '/svg',
+    name: 'svg',
+    meta: { nav: true, label: 'SVG' },
+    children: [
+      {
+        path: 'svgo-optimizer',
+        name: 'svgo-optimizer',
+        component: () => import('@/view/svg/svgo/Index.vue'),
+        meta: { nav: true, label: 'SVGO Optimizer' },
+      },
+    ],
+  },
 
   // 필요시 다른 라우트 추가
 ];

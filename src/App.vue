@@ -23,5 +23,10 @@ import NavBar from '@/components/NavBar.vue';
 :global(body) {
   margin: 0;
   background: #f4f7fb;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+:global(#app) {
+  padding-top: 210px;
 }
 </style>

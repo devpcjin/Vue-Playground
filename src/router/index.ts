@@ -37,6 +37,12 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/view/svg/svgo/Index.vue'),
         meta: { nav: true, label: 'SVGO Optimizer' },
       },
+      {
+        path: 'svgo-for-moda',
+        name: 'svgo-for-moda',
+        component: () => import('@/view/svg/forModa/Index.vue'),
+        meta: { nav: true, label: 'SVGO for MODA' },
+      },
     ],
   },
 

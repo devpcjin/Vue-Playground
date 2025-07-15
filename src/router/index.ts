@@ -43,6 +43,12 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/view/svg/forModa/Index.vue'),
         meta: { nav: true, label: 'SVGO for MODA' },
       },
+      {
+        path: 'svgo-for-moda-flags',
+        name: 'svgo-for-moda-flags',
+        component: () => import('@/view/svg/forModa/flags/Index.vue'),
+        meta: { nav: true, label: 'SVGO for MODA Flags' },
+      },
     ],
   },
 

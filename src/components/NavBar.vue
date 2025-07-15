@@ -152,6 +152,8 @@ function fullChildPath(parent: RouteRecordRaw, child: RouteRecordRaw) {
   padding: 0.7rem 1.2rem;
   text-decoration: none;
   font-size: 1rem;
+  white-space: nowrap;
+  text-align: left;
   transition:
     background 0.2s,
     color 0.2s;

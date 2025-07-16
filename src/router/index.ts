@@ -51,6 +51,25 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
+  {
+    path: '/headless-ui',
+    name: 'headless-ui',
+    meta: { nav: true, label: 'Headless UI' },
+    children: [
+      {
+        path: 'base',
+        name: 'base',
+        component: () => import('@/view/headless-ui/tabs/base/Index.vue'),
+        meta: { nav: true, label: 'Base' },
+      },
+      {
+        path: 'contents-tab',
+        name: 'contents-tab',
+        component: () => import('@/view/headless-ui/tabs/contents-tab/Index.vue'),
+        meta: { nav: true, label: 'Contents Tab' },
+      },
+    ],
+  },
 
   // 필요시 다른 라우트 추가
 ];

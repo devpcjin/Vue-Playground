@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-6xl mx-auto p-8 bg-white rounded-xl shadow-lg text-center">
+  <div class="p-8 bg-white rounded-xl shadow-lg text-center">
     <h2>SVGO for MODA</h2>
     <div class="mb-4">
       <label class="cursor-pointer select-none text-lg">

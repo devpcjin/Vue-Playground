@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-100 flex items-start justify-center pt-10">
+  <div class="min-h-screen flex items-start justify-center pt-10 -m-8 -mt-[120px]">
     <div class="w-90 mx-auto bg-transparent">
       <TabGroup v-slot="{ selectedIndex }">
         <TabList class="flex bg-gray-200 rounded-t-lg border-none p-0 m-0 gap-0">

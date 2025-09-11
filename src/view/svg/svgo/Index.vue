@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-5xl mx-auto p-8 bg-white rounded-xl shadow-lg text-center">
+  <div class="p-8 bg-white rounded-xl shadow-lg text-center">
     <h2>SVGO Optimizer</h2>
     <p>SVG 파일을 업로드하면 최적화된 SVG를 다운로드할 수 있습니다.</p>
     <input type="file" accept=".svg" @change="onFileChange" class="mt-4" />

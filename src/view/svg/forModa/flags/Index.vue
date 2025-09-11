@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-6xl mx-auto p-8 bg-white rounded-xl shadow-lg text-center">
+  <div class="p-8 bg-white rounded-xl shadow-lg text-center">
     <h2>SVGO for MODA</h2>
     <div class="my-4 text-lg text-royal-blue font-bold">
       <span>Before: {{ totalOriginalSize }} bytes ({{ totalOriginalSizeKB }} KB)</span>

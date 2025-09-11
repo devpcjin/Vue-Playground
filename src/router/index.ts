@@ -57,16 +57,10 @@ const routes: Array<RouteRecordRaw> = [
     meta: { nav: true, label: 'Headless UI' },
     children: [
       {
-        path: 'base',
-        name: 'base',
-        component: () => import('@/view/headless-ui/tabs/base/Index.vue'),
-        meta: { nav: true, label: 'Base' },
-      },
-      {
-        path: 'contents-tab',
-        name: 'contents-tab',
-        component: () => import('@/view/headless-ui/tabs/contents-tab/Index.vue'),
-        meta: { nav: true, label: 'Contents Tab' },
+        path: 'tabs',
+        name: 'headless-ui-tabs',
+        component: () => import('@/view/headless-ui/tabs/Index.vue'),
+        meta: { nav: true, label: 'Tabs' },
       },
     ],
   },

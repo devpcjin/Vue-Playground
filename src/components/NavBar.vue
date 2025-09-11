@@ -1,7 +1,7 @@
 <template>
   <header class="w-screen min-w-0 bg-cornflower-blue shadow-lg fixed left-0 top-0 z-[1000]">
     <div class="max-w-6xl mx-auto px-8 pb-2">
-      <div class="text-3xl font-bold text-white pt-4 pb-2 tracking-wide">Vue Playground</div>
+      <div class="text-3xl font-bold text-white pt-4 pb-6 tracking-wide">Vue Playground</div>
       <nav class="flex gap-8 items-center mb-2">
         <template v-for="route in navRoutes" :key="route.path">
           <router-link
@@ -33,7 +33,11 @@
                 >
                   <router-link
                     :to="fullChildPath(route, child)"
-                    class="block text-royal-blue px-5 py-3 no-underline text-base whitespace-nowrap text-left transition-all duration-200 hover:bg-blue-100 hover:text-gray-800"
+                    class="block px-5 py-3 no-underline text-base whitespace-nowrap text-left transition-all duration-200 hover:bg-blue-100 hover:text-gray-800"
+                    :class="{
+                      'text-white bg-royal-blue': isActive(fullChildPath(route, child)),
+                      'text-royal-blue': !isActive(fullChildPath(route, child)),
+                    }"
                     @click="openDropdown = null"
                   >
                     {{ child.meta?.label }}

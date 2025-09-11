@@ -1,52 +1,111 @@
 <template>
-  <div class="p-8 bg-white rounded-xl shadow-lg text-center">
-    <h2>SVGO Optimizer</h2>
-    <p>SVG 파일을 업로드하면 최적화된 SVG를 다운로드할 수 있습니다.</p>
-    <input type="file" accept=".svg" @change="onFileChange" class="mt-4" />
-    <div v-if="optimizedSvg" class="mt-8">
-      <h3>최적화 결과</h3>
-      <textarea readonly :value="optimizedSvg" rows="10" class="w-full mt-4"></textarea>
-      <div class="flex flex-col gap-2 items-center my-6">
-        <button
-          @click="downloadOptimizedSvg"
-          class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
-        >
-          최적화 SVG 다운로드
-        </button>
-        <button
-          class="px-5 py-2 text-base bg-royal-blue text-white border-none rounded cursor-pointer transition-colors hover:bg-blue-800"
-          @click="showPreview = !showPreview"
-        >
-          {{ showPreview ? '닫기' : '미리 보기' }}
-        </button>
-      </div>
-      <div v-if="showPreview">
-        <div class="flex justify-center gap-12 mt-8">
-          <div class="flex-1 flex flex-col items-center">
-            <div class="font-bold text-royal-blue mb-2">Before</div>
-            <div
-              class="mx-auto flex justify-center items-center min-h-[120px] min-w-[180px] max-w-[480px] border border-blue-100 bg-blue-50 rounded-lg p-4"
-              v-html="originalSvg"
-            ></div>
-            <div class="mt-2 text-gray-500 text-sm">
-              {{ originalSize }} bytes ({{ originalSizeKB }} KB)
+  <v-card class="w-[520px]">
+    <v-card-title class="text-center">
+      <v-icon class="mr-2">mdi-image-edit</v-icon>
+      SVGO Optimizer
+    </v-card-title>
+    <v-card-text class="text-center">
+      <p class="mb-4">SVG 파일을 업로드하면 최적화된 SVG를 다운로드할 수 있습니다.</p>
+
+      <v-file-input
+        accept=".svg"
+        label="SVG 파일 선택"
+        variant="outlined"
+        prepend-icon="mdi-file-image"
+        @change="onFileChange"
+        class="mb-4"
+      />
+
+      <v-card v-if="optimizedSvg" variant="outlined" class="mt-8">
+        <v-card-title>
+          <v-icon class="mr-2">mdi-check-circle</v-icon>
+          최적화 결과
+        </v-card-title>
+        <v-card-text>
+          <v-textarea
+            readonly
+            :value="optimizedSvg"
+            rows="10"
+            variant="outlined"
+            class="font-monospace mb-4"
+          />
+
+          <v-row class="justify-center">
+            <v-col>
+              <v-btn
+                @click="downloadOptimizedSvg"
+                color="primary"
+                variant="elevated"
+                block
+                full-width
+                class="mb-2"
+              >
+                <v-icon class="mr-2">mdi-download</v-icon>
+                최적화 SVG 다운로드
+              </v-btn>
+
+              <v-btn
+                @click="showPreview = !showPreview"
+                color="secondary"
+                variant="elevated"
+                block
+                class="mb-2"
+              >
+                <v-icon class="mr-2">{{ showPreview ? 'mdi-eye-off' : 'mdi-eye' }}</v-icon>
+                {{ showPreview ? '닫기' : '미리 보기' }}
+              </v-btn>
+            </v-col>
+          </v-row>
+
+          <v-expand-transition>
+            <div v-if="showPreview">
+              <v-divider class="my-4" />
+              <v-row class="justify-center">
+                <v-col cols="12" md="6">
+                  <v-card variant="outlined">
+                    <v-card-title class="text-center">
+                      <v-icon class="mr-2">mdi-image</v-icon>
+                      Before
+                    </v-card-title>
+                    <v-card-text class="text-center">
+                      <div
+                        class="mx-auto flex justify-center items-center min-h-[120px] min-w-[180px] max-w-[480px] border border-grey-lighten-2 bg-grey-lighten-5 rounded-lg p-4"
+                        v-html="originalSvg"
+                      />
+                      <v-chip class="mt-2" color="info" variant="tonal">
+                        {{ originalSize }} bytes ({{ originalSizeKB }} KB)
+                      </v-chip>
+                    </v-card-text>
+                  </v-card>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-card variant="outlined">
+                    <v-card-title class="text-center">
+                      <v-icon class="mr-2">mdi-image-edit</v-icon>
+                      After
+                    </v-card-title>
+                    <v-card-text class="text-center">
+                      <div
+                        class="mx-auto flex justify-center items-center min-h-[120px] min-w-[180px] max-w-[480px] border border-grey-lighten-2 bg-grey-lighten-5 rounded-lg p-4"
+                        v-html="optimizedSvg"
+                      />
+                      <v-chip class="mt-2" color="success" variant="tonal">
+                        {{ optimizedSize }} bytes ({{ optimizedSizeKB }} KB)
+                      </v-chip>
+                    </v-card-text>
+                  </v-card>
+                </v-col>
+              </v-row>
             </div>
-          </div>
-          <div class="flex-1 flex flex-col items-center">
-            <div class="font-bold text-royal-blue mb-2">After</div>
-            <div
-              class="mx-auto flex justify-center items-center min-h-[120px] min-w-[180px] max-w-[480px] border border-blue-100 bg-blue-50 rounded-lg p-4"
-              v-html="optimizedSvg"
-            ></div>
-            <div class="mt-2 text-gray-500 text-sm">
-              {{ optimizedSize }} bytes ({{ optimizedSizeKB }} KB)
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div v-if="errorMsg" class="text-red-600 mt-4">{{ errorMsg }}</div>
-  </div>
+          </v-expand-transition>
+        </v-card-text>
+      </v-card>
+
+      <v-alert v-if="errorMsg" type="error" variant="tonal" class="mt-4">
+        {{ errorMsg }}
+      </v-alert>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script setup lang="ts">

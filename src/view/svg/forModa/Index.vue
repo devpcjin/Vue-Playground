@@ -1,54 +1,102 @@
 <template>
-  <div class="p-8 bg-white rounded-xl shadow-lg text-center">
-    <h2>SVGO for MODA</h2>
-    <div class="mb-4">
-      <label class="cursor-pointer select-none text-lg">
-        <input type="checkbox" v-model="showFlags" class="align-middle mr-2" />
-        국기 포함 여부
-      </label>
-    </div>
-    <div class="my-4 text-lg text-royal-blue font-bold">
-      <span>Before: {{ totalOriginalSize }} bytes ({{ totalOriginalSizeKB }} KB)</span>
-      &nbsp;|&nbsp;
-      <span>After: {{ totalOptimizedSize }} bytes ({{ totalOptimizedSizeKB }} KB)</span>
-    </div>
-    <div class="mb-4 text-lg font-bold" :style="{ color: reductionRateColor }">
-      최적화 효율: {{ reductionRate }}%
-    </div>
-    <p>아래는 모든 SVG 파일의 최적화 전/후 비교입니다.</p>
-    <div v-if="filteredSvgList.length === 0" class="my-8 text-gray-500">SVG 파일이 없습니다.</div>
-    <div v-else class="mt-8 flex flex-col gap-10">
-      <div v-for="svg in filteredSvgList" :key="svg.path" class="border-b border-blue-100 pb-8">
-        <div class="font-bold text-royal-blue mb-4 text-lg">{{ svg.name }}</div>
-        <div class="flex justify-center gap-12 mt-2">
-          <div class="flex-1 flex flex-col items-center">
-            <div class="font-bold text-royal-blue mb-2">Before</div>
-            <div
-              class="mx-auto flex justify-center items-center min-h-[120px] min-w-[180px] max-w-[480px] border border-blue-100 bg-blue-50 rounded-lg p-4"
-              v-if="svg.originalUrl"
-            >
-              <img :src="svg.originalUrl" alt="original svg" />
-            </div>
-            <div class="mt-2 text-gray-500 text-sm">
-              {{ svg.originalSize }} bytes ({{ svg.originalSizeKB }} KB)
-            </div>
-          </div>
-          <div class="flex-1 flex flex-col items-center">
-            <div class="font-bold text-royal-blue mb-2">After</div>
-            <div
-              class="mx-auto flex justify-center items-center min-h-[120px] min-w-[180px] max-w-[480px] border border-blue-100 bg-blue-50 rounded-lg p-4"
-              v-if="svg.optimizedUrl"
-            >
-              <img :src="svg.optimizedUrl" alt="optimized svg" />
-            </div>
-            <div class="mt-2 text-gray-500 text-sm">
-              {{ svg.optimizedSize }} bytes ({{ svg.optimizedSizeKB }} KB)
-            </div>
-          </div>
+  <v-card class="!pt-[20px]">
+    <v-card-title class="text-center">
+      <v-icon class="mr-2">mdi-image-multiple</v-icon>
+      SVGO for MODA
+    </v-card-title>
+    <v-card-text class="text-center">
+      <div class="w-[600px] mx-auto">
+        <div class="w-full flex justify-end">
+          <v-checkbox v-model="showFlags" label="국기 포함" color="primary" />
         </div>
+        <v-row class="justify-center mb-4">
+          <v-col cols="12" md="6">
+            <v-chip color="info" variant="tonal" size="large" class="mr-2">
+              Before: {{ totalOriginalSize }} bytes ({{ totalOriginalSizeKB }} KB)
+            </v-chip>
+          </v-col>
+          <v-col cols="12" md="6">
+            <v-chip color="success" variant="tonal" size="large">
+              After: {{ totalOptimizedSize }} bytes ({{ totalOptimizedSizeKB }} KB)
+            </v-chip>
+          </v-col>
+        </v-row>
+
+        <v-alert
+          :color="
+            reductionRateColor === '#e74c3c'
+              ? 'error'
+              : reductionRateColor === '#2e8b57'
+                ? 'success'
+                : 'info'
+          "
+          variant="tonal"
+          class="mb-4"
+        >
+          <v-icon class="mr-2">mdi-chart-line</v-icon>
+          최적화 효율: {{ reductionRate }}%
+        </v-alert>
+
+        <p class="mb-4">아래는 모든 SVG 파일의 최적화 전/후 비교입니다.</p>
       </div>
-    </div>
-  </div>
+
+      <v-alert v-if="filteredSvgList.length === 0" type="info" variant="tonal" class="my-8">
+        <v-icon class="mr-2">mdi-information</v-icon>
+        SVG 파일이 없습니다.
+      </v-alert>
+
+      <v-expansion-panels v-else class="mt-8">
+        <v-expansion-panel v-for="svg in filteredSvgList" :key="svg.path" class="mb-4">
+          <v-expansion-panel-title>
+            <v-icon class="mr-2">mdi-file-image</v-icon>
+            {{ svg.name }}
+          </v-expansion-panel-title>
+          <v-expansion-panel-text>
+            <v-row class="justify-center">
+              <v-col cols="12" md="6">
+                <v-card variant="outlined">
+                  <v-card-title class="text-center">
+                    <v-icon class="mr-2">mdi-image</v-icon>
+                    Before
+                  </v-card-title>
+                  <v-card-text class="text-center">
+                    <div
+                      class="mx-auto flex justify-center items-center min-h-[120px] min-w-[180px] max-w-[480px] border border-grey-lighten-2 bg-grey-lighten-5 rounded-lg p-4"
+                      v-if="svg.originalUrl"
+                    >
+                      <img :src="svg.originalUrl" alt="original svg" />
+                    </div>
+                    <v-chip class="mt-2" color="info" variant="tonal">
+                      {{ svg.originalSize }} bytes ({{ svg.originalSizeKB }} KB)
+                    </v-chip>
+                  </v-card-text>
+                </v-card>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-card variant="outlined">
+                  <v-card-title class="text-center">
+                    <v-icon class="mr-2">mdi-image-edit</v-icon>
+                    After
+                  </v-card-title>
+                  <v-card-text class="text-center">
+                    <div
+                      class="mx-auto flex justify-center items-center min-h-[120px] min-w-[180px] max-w-[480px] border border-grey-lighten-2 bg-grey-lighten-5 rounded-lg p-4"
+                      v-if="svg.optimizedUrl"
+                    >
+                      <img :src="svg.optimizedUrl" alt="optimized svg" />
+                    </div>
+                    <v-chip class="mt-2" color="success" variant="tonal">
+                      {{ svg.optimizedSize }} bytes ({{ svg.optimizedSizeKB }} KB)
+                    </v-chip>
+                  </v-card-text>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script setup lang="ts">

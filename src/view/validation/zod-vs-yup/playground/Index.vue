@@ -1,43 +1,85 @@
 <template>
-  <div style="max-width: 900px; margin: 0 auto; padding: 2rem">
-    <h2>Zod vs Yup Playground</h2>
-    <div style="display: flex; gap: 2rem">
-      <div style="flex: 1">
-        <label><b>Zod Schema</b></label>
-        <textarea
-          v-model="zodSchemaText"
-          rows="8"
-          style="width: 100%; font-family: monospace"
-        ></textarea>
-      </div>
-      <div style="flex: 1">
-        <label><b>Yup Schema</b></label>
-        <textarea
-          v-model="yupSchemaText"
-          rows="8"
-          style="width: 100%; font-family: monospace"
-        ></textarea>
-      </div>
-    </div>
-    <div style="margin: 1.5rem 0">
-      <label><b>Input Value (JSON or string)</b></label>
-      <textarea v-model="inputText" rows="4" style="width: 100%; font-family: monospace"></textarea>
-    </div>
-    <div style="display: flex; gap: 2rem">
-      <div style="flex: 1">
-        <button @click="validateZod">Zod Validate</button>
-        <div v-if="zodResult" style="margin-top: 1rem">
-          <pre>{{ zodResult }}</pre>
-        </div>
-      </div>
-      <div style="flex: 1">
-        <button @click="validateYup">Yup Validate</button>
-        <div v-if="yupResult" style="margin-top: 1rem">
-          <pre>{{ yupResult }}</pre>
-        </div>
-      </div>
-    </div>
-  </div>
+  <v-container max-width="900">
+    <v-card>
+      <v-card-title>
+        <v-icon class="mr-2">mdi-code-tags</v-icon>
+        Zod vs Yup Playground
+      </v-card-title>
+      <v-card-text>
+        <v-row class="mb-4">
+          <v-col cols="12" md="6">
+            <v-label class="text-h6 mb-2"> Zod Schema </v-label>
+            <v-textarea
+              v-model="zodSchemaText"
+              rows="8"
+              variant="outlined"
+              class="font-monospace"
+            />
+          </v-col>
+          <v-col cols="12" md="6">
+            <v-label class="text-h6 mb-2"> Yup Schema </v-label>
+            <v-textarea
+              v-model="yupSchemaText"
+              rows="8"
+              variant="outlined"
+              class="font-monospace"
+            />
+          </v-col>
+        </v-row>
+
+        <v-row class="mb-4">
+          <v-col cols="12">
+            <v-label class="text-h6 mb-2">
+              <v-icon class="mr-1">mdi-code-json</v-icon>
+              Input Value (JSON or string)
+            </v-label>
+            <v-textarea v-model="inputText" rows="4" variant="outlined" class="font-monospace" />
+          </v-col>
+        </v-row>
+
+        <v-row>
+          <v-col cols="12" md="6">
+            <v-btn @click="validateZod" color="primary" variant="elevated" block class="mb-4">
+              <v-icon class="mr-2">mdi-check-circle</v-icon>
+              Zod Validate
+            </v-btn>
+            <v-alert
+              v-if="zodResult"
+              :type="
+                zodResult.includes('✅')
+                  ? 'success'
+                  : zodResult.includes('❌')
+                    ? 'error'
+                    : 'warning'
+              "
+              variant="tonal"
+            >
+              <pre class="text-caption">{{ zodResult }}</pre>
+            </v-alert>
+          </v-col>
+          <v-col cols="12" md="6">
+            <v-btn @click="validateYup" color="success" variant="elevated" block class="mb-4">
+              <v-icon class="mr-2">mdi-check-circle-outline</v-icon>
+              Yup Validate
+            </v-btn>
+            <v-alert
+              v-if="yupResult"
+              :type="
+                yupResult.includes('✅')
+                  ? 'success'
+                  : yupResult.includes('❌')
+                    ? 'error'
+                    : 'warning'
+              "
+              variant="tonal"
+            >
+              <pre class="text-caption">{{ yupResult }}</pre>
+            </v-alert>
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
+  </v-container>
 </template>
 
 <script setup lang="ts">

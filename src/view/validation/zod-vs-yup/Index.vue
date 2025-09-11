@@ -1,53 +1,61 @@
 <template>
-  <div class="flex gap-8">
+  <v-row class="w-full">
     <!-- Zod Validation Form -->
-    <div class="flex-1">
-      <h2>Zod Validation</h2>
-      <form @submit.prevent="validateZod" class="space-y-4">
-        <div>
-          <label class="inline-block w-12">이름:</label>
-          <input v-model="zodName" type="text" class="mb-2" />
-        </div>
-        <div>
-          <label class="inline-block w-12">나이:</label>
-          <input v-model.number="zodAge" type="number" class="mb-2" />
-        </div>
-        <button
-          type="submit"
-          class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
-        >
-          Zod Validate
-        </button>
-      </form>
-      <div v-if="zodResult" class="mt-4">
-        <pre class="bg-gray-100 p-2 rounded">{{ zodResult }}</pre>
-      </div>
-    </div>
+    <v-col col="8">
+      <v-card>
+        <v-card-title>
+          <v-icon class="mr-2">mdi-check-circle</v-icon>
+          Zod Validation
+        </v-card-title>
+        <v-card-text>
+          <v-form @submit.prevent="validateZod">
+            <v-text-field v-model="zodName" label="이름" variant="outlined" class="mb-4" />
+            <v-text-field
+              v-model.number="zodAge"
+              label="나이"
+              type="number"
+              variant="outlined"
+              class="mb-4"
+            />
+            <v-btn type="submit" color="primary" variant="elevated" block> Zod Validate </v-btn>
+          </v-form>
+        </v-card-text>
+        <v-card-text v-if="zodResult">
+          <v-alert :type="zodResult.includes('✅') ? 'success' : 'error'" variant="tonal">
+            <pre class="text-caption text-left">{{ zodResult }}</pre>
+          </v-alert>
+        </v-card-text>
+      </v-card>
+    </v-col>
 
     <!-- Yup Validation Form -->
-    <div class="flex-1">
-      <h2>Yup Validation</h2>
-      <form @submit.prevent="validateYup" class="space-y-4">
-        <div>
-          <label class="inline-block w-12">이름:</label>
-          <input v-model="yupName" type="text" class="mb-2" />
-        </div>
-        <div>
-          <label class="inline-block w-12">나이:</label>
-          <input v-model.number="yupAge" type="number" class="mb-2" />
-        </div>
-        <button
-          type="submit"
-          class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
-        >
-          Yup Validate
-        </button>
-      </form>
-      <div v-if="yupResult" class="mt-4">
-        <pre class="bg-gray-100 p-2 rounded">{{ yupResult }}</pre>
-      </div>
-    </div>
-  </div>
+    <v-col>
+      <v-card>
+        <v-card-title>
+          <v-icon class="mr-2">mdi-check-circle-outline</v-icon>
+          Yup Validation
+        </v-card-title>
+        <v-card-text>
+          <v-form @submit.prevent="validateYup">
+            <v-text-field v-model="yupName" label="이름" variant="outlined" class="mb-4" />
+            <v-text-field
+              v-model.number="yupAge"
+              label="나이"
+              type="number"
+              variant="outlined"
+              class="mb-4"
+            />
+            <v-btn type="submit" color="success" variant="elevated" block> Yup Validate </v-btn>
+          </v-form>
+        </v-card-text>
+        <v-card-text v-if="yupResult">
+          <v-alert :type="yupResult.includes('✅') ? 'success' : 'error'" variant="tonal">
+            <pre class="text-caption text-left">{{ yupResult }}</pre>
+          </v-alert>
+        </v-card-text>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script setup lang="ts">

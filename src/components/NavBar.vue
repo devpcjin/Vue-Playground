@@ -1,32 +1,39 @@
 <template>
-  <header class="navbar">
-    <div class="navbar-inner">
-      <div class="navbar-title">Vue Playground</div>
-      <nav class="navbar-menu">
+  <header class="w-screen min-w-0 bg-cornflower-blue shadow-lg fixed left-0 top-0 z-[1000]">
+    <div class="max-w-6xl mx-auto px-8 pb-2">
+      <div class="text-3xl font-bold text-white pt-4 pb-2 tracking-wide">Vue Playground</div>
+      <nav class="flex gap-8 items-center mb-2">
         <template v-for="route in navRoutes" :key="route.path">
           <router-link
             v-if="!route.children"
             :to="route.path"
-            class="navbar-item"
-            :class="{ active: isActive(route.path) }"
+            class="text-blue-100 text-lg no-underline px-3 py-2 rounded-t transition-all duration-200 cursor-pointer hover:text-white hover:bg-royal-blue"
+            :class="{ 'text-white bg-royal-blue': isActive(route.path) }"
             >{{ route.meta?.label }}</router-link
           >
           <div
             v-else
-            class="navbar-item validation-menu"
+            class="relative cursor-pointer"
             @mouseenter="openDropdown = route.path"
             @mouseleave="openDropdown = null"
           >
-            <span :class="{ active: isDropdownActive(route) }">{{ route.meta?.label }}</span>
+            <span
+              class="text-blue-100 text-lg px-3 py-2 rounded-t transition-all duration-200 hover:text-white hover:bg-royal-blue"
+              :class="{ 'text-white bg-royal-blue': isDropdownActive(route) }"
+              >{{ route.meta?.label }}</span
+            >
             <transition name="slide-fade">
-              <ul v-if="openDropdown === route.path" class="submenu">
+              <ul
+                v-if="openDropdown === route.path"
+                class="absolute left-0 top-9 bg-white shadow-lg rounded-b min-w-[200px] z-10 py-2 animate-slide-down"
+              >
                 <li
                   v-for="child in route.children.filter((c: any) => c.meta?.nav)"
                   :key="child.path"
                 >
                   <router-link
                     :to="fullChildPath(route, child)"
-                    class="submenu-item"
+                    class="block text-royal-blue px-5 py-3 no-underline text-base whitespace-nowrap text-left transition-all duration-200 hover:bg-blue-100 hover:text-gray-800"
                     @click="openDropdown = null"
                   >
                     {{ child.meta?.label }}
@@ -70,98 +77,7 @@ function fullChildPath(parent: RouteRecordRaw, child: RouteRecordRaw) {
 </script>
 
 <style scoped>
-.navbar {
-  width: 100vw;
-  min-width: 0;
-  background: #6495ed;
-  box-shadow: 0 2px 8px #0002;
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 1000;
-}
-.navbar-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem 0.5rem 2rem;
-}
-.navbar-title {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #fff;
-  padding: 1rem 0 0.5rem 0;
-  letter-spacing: 1px;
-}
-.navbar-menu {
-  display: flex;
-  gap: 2rem;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
-.navbar-item {
-  color: #e3e9f7;
-  font-size: 1.1rem;
-  text-decoration: none;
-  padding: 0.5rem 0.7rem;
-  border-radius: 4px 4px 0 0;
-  position: relative;
-  transition:
-    background 0.2s,
-    color 0.2s;
-  cursor: pointer;
-}
-.navbar-item.active,
-.navbar-item:hover,
-.validation-menu > span.active {
-  color: #fff;
-  background: #4169e1;
-}
-.validation-menu {
-  position: relative;
-  cursor: pointer;
-}
-.validation-menu > span {
-  color: #e3e9f7;
-  font-size: 1.1rem;
-  padding: 0.5rem 0.7rem;
-  border-radius: 4px 4px 0 0;
-  transition:
-    background 0.2s,
-    color 0.2s;
-}
-.validation-menu > span.active,
-.validation-menu > span:hover {
-  color: #fff;
-  background: #4169e1;
-}
-.submenu {
-  position: absolute;
-  left: 0;
-  top: 2.2rem;
-  background: #fff;
-  box-shadow: 0 2px 8px #0002;
-  border-radius: 0 0 8px 8px;
-  min-width: 200px;
-  z-index: 10;
-  padding: 0.5rem 0;
-  animation: slideDown 0.2s;
-}
-.submenu-item {
-  display: block;
-  color: #4169e1;
-  padding: 0.7rem 1.2rem;
-  text-decoration: none;
-  font-size: 1rem;
-  white-space: nowrap;
-  text-align: left;
-  transition:
-    background 0.2s,
-    color 0.2s;
-}
-.submenu-item:hover {
-  background: #e3e9f7;
-  color: #222;
-}
+/* 트랜지션 애니메이션 */
 .slide-fade-enter-active {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -172,15 +88,5 @@ function fullChildPath(parent: RouteRecordRaw, child: RouteRecordRaw) {
 .slide-fade-leave-to {
   opacity: 0;
   transform: translateY(-10px);
-}
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 </style>

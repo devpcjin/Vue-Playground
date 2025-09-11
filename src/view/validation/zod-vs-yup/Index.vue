@@ -1,40 +1,50 @@
 <template>
-  <div style="display: flex; gap: 2rem">
+  <div class="flex gap-8">
     <!-- Zod Validation Form -->
-    <div>
+    <div class="flex-1">
       <h2>Zod Validation</h2>
-      <form @submit.prevent="validateZod">
+      <form @submit.prevent="validateZod" class="space-y-4">
         <div>
-          <label>이름:</label>
-          <input v-model="zodName" type="text" />
+          <label class="inline-block w-12">이름:</label>
+          <input v-model="zodName" type="text" class="mb-2" />
         </div>
         <div>
-          <label>나이:</label>
-          <input v-model.number="zodAge" type="number" />
+          <label class="inline-block w-12">나이:</label>
+          <input v-model.number="zodAge" type="number" class="mb-2" />
         </div>
-        <button type="submit">Zod Validate</button>
+        <button
+          type="submit"
+          class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+        >
+          Zod Validate
+        </button>
       </form>
-      <div v-if="zodResult">
-        <pre>{{ zodResult }}</pre>
+      <div v-if="zodResult" class="mt-4">
+        <pre class="bg-gray-100 p-2 rounded">{{ zodResult }}</pre>
       </div>
     </div>
 
     <!-- Yup Validation Form -->
-    <div>
+    <div class="flex-1">
       <h2>Yup Validation</h2>
-      <form @submit.prevent="validateYup">
+      <form @submit.prevent="validateYup" class="space-y-4">
         <div>
-          <label>이름:</label>
-          <input v-model="yupName" type="text" />
+          <label class="inline-block w-12">이름:</label>
+          <input v-model="yupName" type="text" class="mb-2" />
         </div>
         <div>
-          <label>나이:</label>
-          <input v-model.number="yupAge" type="number" />
+          <label class="inline-block w-12">나이:</label>
+          <input v-model.number="yupAge" type="number" class="mb-2" />
         </div>
-        <button type="submit">Yup Validate</button>
+        <button
+          type="submit"
+          class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+        >
+          Yup Validate
+        </button>
       </form>
-      <div v-if="yupResult">
-        <pre>{{ yupResult }}</pre>
+      <div v-if="yupResult" class="mt-4">
+        <pre class="bg-gray-100 p-2 rounded">{{ yupResult }}</pre>
       </div>
     </div>
   </div>
@@ -79,21 +89,3 @@ async function validateYup() {
   }
 }
 </script>
-
-<style scoped>
-div {
-  margin-bottom: 1rem;
-}
-label {
-  display: inline-block;
-  width: 3rem;
-}
-input {
-  margin-bottom: 0.5rem;
-}
-pre {
-  background: #f5f5f5;
-  padding: 0.5rem;
-  border-radius: 4px;
-}
-</style>

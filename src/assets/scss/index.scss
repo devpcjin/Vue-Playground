@@ -7,3 +7,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+// 글로벌 스타일
+body {
+  margin: 0;
+  background: #f4f7fb;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+#app {
+  padding-top: 210px;
+}

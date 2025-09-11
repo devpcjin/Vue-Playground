@@ -6,27 +6,3 @@ import NavBar from '@/components/NavBar.vue';
   <NavBar />
   <router-view />
 </template>
-
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-:global(body) {
-  margin: 0;
-  background: #f4f7fb;
-  min-height: 100vh;
-  overflow-y: auto;
-}
-:global(#app) {
-  padding-top: 210px;
-}
-</style>

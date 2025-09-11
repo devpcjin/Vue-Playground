@@ -1,33 +1,51 @@
 <template>
-  <div class="svgo-optimizer-page">
+  <div class="max-w-5xl mx-auto p-8 bg-white rounded-xl shadow-lg text-center">
     <h2>SVGO Optimizer</h2>
     <p>SVG 파일을 업로드하면 최적화된 SVG를 다운로드할 수 있습니다.</p>
-    <input type="file" accept=".svg" @change="onFileChange" />
-    <div v-if="optimizedSvg" class="result-block">
+    <input type="file" accept=".svg" @change="onFileChange" class="mt-4" />
+    <div v-if="optimizedSvg" class="mt-8">
       <h3>최적화 결과</h3>
-      <textarea readonly :value="optimizedSvg" rows="10" style="width: 100%"></textarea>
-      <div class="button-col">
-        <button @click="downloadOptimizedSvg">최적화 SVG 다운로드</button>
-        <button class="preview-toggle" @click="showPreview = !showPreview">
+      <textarea readonly :value="optimizedSvg" rows="10" class="w-full mt-4"></textarea>
+      <div class="flex flex-col gap-2 items-center my-6">
+        <button
+          @click="downloadOptimizedSvg"
+          class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+        >
+          최적화 SVG 다운로드
+        </button>
+        <button
+          class="px-5 py-2 text-base bg-royal-blue text-white border-none rounded cursor-pointer transition-colors hover:bg-blue-800"
+          @click="showPreview = !showPreview"
+        >
           {{ showPreview ? '닫기' : '미리 보기' }}
         </button>
       </div>
       <div v-if="showPreview">
-        <div class="svg-compare-block">
-          <div class="svg-preview-col">
-            <div class="svg-preview-label">Before</div>
-            <div class="svg-preview" v-html="originalSvg"></div>
-            <div class="svg-size">{{ originalSize }} bytes ({{ originalSizeKB }} KB)</div>
+        <div class="flex justify-center gap-12 mt-8">
+          <div class="flex-1 flex flex-col items-center">
+            <div class="font-bold text-royal-blue mb-2">Before</div>
+            <div
+              class="mx-auto flex justify-center items-center min-h-[120px] min-w-[180px] max-w-[480px] border border-blue-100 bg-blue-50 rounded-lg p-4"
+              v-html="originalSvg"
+            ></div>
+            <div class="mt-2 text-gray-500 text-sm">
+              {{ originalSize }} bytes ({{ originalSizeKB }} KB)
+            </div>
           </div>
-          <div class="svg-preview-col">
-            <div class="svg-preview-label">After</div>
-            <div class="svg-preview" v-html="optimizedSvg"></div>
-            <div class="svg-size">{{ optimizedSize }} bytes ({{ optimizedSizeKB }} KB)</div>
+          <div class="flex-1 flex flex-col items-center">
+            <div class="font-bold text-royal-blue mb-2">After</div>
+            <div
+              class="mx-auto flex justify-center items-center min-h-[120px] min-w-[180px] max-w-[480px] border border-blue-100 bg-blue-50 rounded-lg p-4"
+              v-html="optimizedSvg"
+            ></div>
+            <div class="mt-2 text-gray-500 text-sm">
+              {{ optimizedSize }} bytes ({{ optimizedSizeKB }} KB)
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div v-if="errorMsg" class="error">{{ errorMsg }}</div>
+    <div v-if="errorMsg" class="text-red-600 mt-4">{{ errorMsg }}</div>
   </div>
 </template>
 
@@ -84,77 +102,3 @@ function downloadOptimizedSvg() {
   URL.revokeObjectURL(url);
 }
 </script>
-
-<style scoped>
-.svgo-optimizer-page {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 2rem;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 16px #0001;
-  text-align: center;
-}
-.result-block {
-  margin-top: 2rem;
-}
-.button-col {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: center;
-  margin: 1.5rem 0 0.5rem 0;
-}
-.preview-toggle {
-  padding: 0.5rem 1.2rem;
-  font-size: 1rem;
-  background: #4169e1;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.preview-toggle:hover {
-  background: #274baf;
-}
-.svg-compare-block {
-  display: flex;
-  justify-content: center;
-  gap: 3rem;
-  margin-top: 2rem;
-}
-.svg-preview-col {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.svg-preview-label {
-  font-weight: bold;
-  color: #4169e1;
-  margin-bottom: 0.5rem;
-}
-.svg-preview {
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 120px;
-  min-width: 180px;
-  max-width: 480px;
-  border: 1px solid #e3e9f7;
-  background: #f8faff;
-  border-radius: 8px;
-  padding: 1rem;
-}
-.svg-size {
-  margin-top: 0.5rem;
-  color: #888;
-  font-size: 0.95rem;
-}
-.error {
-  color: #d00;
-  margin-top: 1rem;
-}
-</style>

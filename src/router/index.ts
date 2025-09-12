@@ -64,6 +64,19 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
+  {
+    path: '/editor',
+    name: 'editor',
+    meta: { nav: true, label: 'Editor' },
+    children: [
+      {
+        path: 'tiptap',
+        name: 'tiptap',
+        component: () => import('@/view/editor/tiptap/Index.vue'),
+        meta: { nav: true, label: 'Tiptap' },
+      },
+    ],
+  },
 
   // 필요시 다른 라우트 추가
 ];

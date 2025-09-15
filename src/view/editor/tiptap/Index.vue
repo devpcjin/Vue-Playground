@@ -157,7 +157,13 @@ function formatHtml(html: string): string {
 const editor = useEditor({
   content: '<p>여기에 입력해 보세요!</p>',
   extensions: [
-    StarterKit,
+    StarterKit.configure({
+      // StarterKit에 포함된 확장 프로그램들을 비활성화하여 중복 방지
+      heading: false,
+      bulletList: false,
+      orderedList: false,
+      listItem: false,
+    }),
     Heading.configure({ levels: [1, 2, 3] }),
     BulletList,
     OrderedList,

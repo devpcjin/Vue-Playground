@@ -75,6 +75,12 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/view/editor/tiptap/Index.vue'),
         meta: { nav: true, label: 'Tiptap' },
       },
+      {
+        path: 'toast-ui',
+        name: 'toast-ui',
+        component: () => import('@/view/editor/toast-ui/Index.vue'),
+        meta: { nav: true, label: 'Toast UI' },
+      },
     ],
   },
 
